@@ -11,7 +11,7 @@ rm -f *.crt *.csr *_creds *.jks *.srl *.key *.pem *.der *.p12
 # Generate CA key
 openssl req -new -x509 -keyout snakeoil-ca-1.key -out snakeoil-ca-1.crt -days 365 -subj '/CN=ca1.test.confluent.io/OU=TEST/O=CONFLUENT/L=PaloAlto/S=Ca/C=US' -passin pass:confluent -passout pass:confluent
 
-for i in broker client
+for i in kafka1 client
 do
 	echo "------------------------------- $i -------------------------------"
 
@@ -19,7 +19,7 @@ do
 	keytool -genkey -noprompt \
 				 -alias $i \
 				 -dname "CN=$i,OU=TEST,O=CONFLUENT,L=PaloAlto,S=Ca,C=US" \
-                                 -ext san=dns:$i \
+                                 -ext san=ip:172.20.0.6 \
 				 -keystore $i.keystore.jks \
 				 -keyalg RSA \
 				 -storepass confluent \
@@ -47,12 +47,11 @@ do
 
 	# Create pem files and keys used for Schema Registry HTTPS testing
 	#   openssl x509 -noout -modulus -in client.certificate.pem | openssl md5
-	#   openssl rsa -noout -modulus -in client.key | openssl md5 
-        #   echo "GET /" | openssl s_client -connect localhost:8082/subjects -cert client.certificate.pem -key client.key -tls1 
+	#   openssl rsa -noout -modulus -in client.key | openssl md5
+        #   echo "GET /" | openssl s_client -connect localhost:8082/subjects -cert client.certificate.pem -key client.key -tls1
 	keytool -export -alias $i -file $i.der -keystore $i.keystore.jks -storepass confluent
 	openssl x509 -inform der -in $i.der -out $i.certificate.pem
 	keytool -importkeystore -srckeystore $i.keystore.jks -destkeystore $i.keystore.p12 -deststoretype PKCS12 -deststorepass confluent -srcstorepass confluent -noprompt
 	openssl pkcs12 -in $i.keystore.p12 -nodes -nocerts -out $i.key -passin pass:confluent
 
 done
-

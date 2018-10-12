@@ -5,3 +5,11 @@
 {% for host in groups['zookeeper'] %}
 server.{{ loop.index }}={{ host }}:2888:3888
 {% endfor %}
+{% if security_mode == 'kerberos' %}
+authProvider.1 = org.apache.zookeeper.server.auth.SASLAuthenticationProvider
+requireClientAuthScheme=sasl
+{% endif %}
+{% if security_mode == 'kerberos_ssl' %}
+authProvider.1 = org.apache.zookeeper.server.auth.SASLAuthenticationProvider
+requireClientAuthScheme=sasl
+{% endif %}

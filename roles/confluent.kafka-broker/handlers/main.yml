@@ -2,5 +2,8 @@
   systemd:
     name: "{{kafka.broker.service_name}}"
     state: restarted
+  when: (install_service)
+
 - name: reload systemd
   command: systemctl daemon-reload
+  when: (install_service)

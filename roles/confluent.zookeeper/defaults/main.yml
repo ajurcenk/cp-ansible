@@ -4,6 +4,7 @@ zookeeper:
   config_file: /etc/kafka/zookeeper.properties
   service_name: confluent-zookeeper
   systemd_override: /etc/systemd/system/confluent-zookeeper.service.d
+  sasl_jaas_cfg_file: /etc/kafka/zookeeper_server_jaas.conf
   config:
     maxClientCnxns: 0
     initLimit: 5
@@ -14,5 +15,5 @@ zookeeper:
   environment:
     KAFKA_HEAP_OPTS: "-Xmx1000M"
   systemd:
-    enabled: yes
+    enabled: No
     state: started

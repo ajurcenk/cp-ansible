@@ -1,0 +1,32 @@
+# Maintained by Ansible
+listeners=SASL_PLAINTEXT://{{inventory_hostname}}:{{broker.config.port}},PLAINTEXT://{{inventory_hostname}}:10091
+listener.security.protocol.map=SASL_PLAINTEXT:SASL_PLAINTEXT,PLAINTEXT:PLAINTEXT
+advertised.listeners=SASL_PLAINTEXT://{{inventory_hostname}}:{{broker.config.port}},PLAINTEXT://{{inventory_hostname}}:10091
+
+zookeeper.set.acl=true
+
+{% include './includes/base_server.properties.j2' %}
+
+
+# Kerberos / GSSAPI Authentication mechanism
+sasl.enabled.mechanisms=GSSAPI
+sasl.mechanism.inter.broker.protocol=GSSAPI
+#security.inter.broker.protocol=SASL_PLAINTEXT
+sasl.kerberos.service.name=kafka
+inter.broker.listener.name=SASL_PLAINTEXT
+allow.everyone.if.no.acl.found=false
+super.users=User:admin;User:kafka;User:ANONYMOUS
+authorizer.class.name=kafka.security.auth.SimpleAclAuthorizer
+
+# Confluent metrics support
+confluent.metrics.reporter.sasl.mechanism=GSSAPI
+confluent.metrics.reporter.sasl.kerberos.service.name=kafka
+confluent.metrics.reporter.security.protocol=SASL_PLAINTEXT
+confluent.metrics.reporter.sasl.jaas.config=com.sun.security.auth.module.Krb5LoginModule required \
+   useKeyTab=true \
+   storeKey=true \
+   keyTab="/var/lib/secret/kafka.key" \
+   principal="kafka/admin@TEST.CONFLUENT.IO";
+
+# Confluent Support
+{% include './includes/confluent_support.j2' %}
