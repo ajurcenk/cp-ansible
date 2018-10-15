@@ -2,5 +2,8 @@
   systemd:
     name: "{{confluent.control.center.service_name}}"
     state: restarted
+  when: (install_service)
+
 - name: reload systemd
   command: systemctl daemon-reload
+  when: (install_service)

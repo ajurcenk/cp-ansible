@@ -7,14 +7,14 @@ confluent:
       service_name: confluent-control-center
       systemd_override: /etc/systemd/system/confluent-control-center.service.d
       environment:
-        CONTROL_CENTER_HEAP_OPTS: "-Xmx6g"
+        CONTROL_CENTER_HEAP_OPTS: "-Xmx4g"
       config:
-        confluent.controlcenter.streams.num.stream.threads: 8
+        confluent.controlcenter.streams.num.stream.threads: 4
         confluent.controlcenter.data.dir: /var/lib/confluent/control-center
-        confluent.controlcenter.ksql.enable: 'true'
-        confluent.controlcenter.schema.registry.enable: 'true'
+        confluent.controlcenter.ksql.enable: 'false'
+        confluent.controlcenter.schema.registry.enable: 'false'
         confluent.controlcenter.streams.ssl.endpoint.identification.algorithm: ""
         confluent.controlcenter.rest.ssl.endpoint.identification.algorithm: ""
       systemd:
-        enabled: yes
+        enabled: no
         state: started
