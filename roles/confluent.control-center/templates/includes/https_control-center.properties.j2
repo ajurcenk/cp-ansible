@@ -1,0 +1,8 @@
+
+# HTTPS UI support
+confluent.controlcenter.rest.ssl.keystore.location=/var/ssl/private/{{inventory_hostname}}.keystore.jks
+confluent.controlcenter.rest.ssl.keystore.password=confluent
+confluent.controlcenter.rest.ssl.key.password=confluent
+confluent.controlcenter.rest.ssl.truststore.location=/var/ssl/private/{{inventory_hostname}}.truststore.jks
+confluent.controlcenter.rest.ssl.truststore.password=confluent
+confluent.controlcenter.rest.listeners=https://{{inventory_hostname}}:9021

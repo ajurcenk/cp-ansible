@@ -1,0 +1,17 @@
+# Maintained by Ansible
+{% include './includes/base_control-center.properties.j2' %}
+
+#SASL additions
+
+confluent.controlcenter.streams.security.protocol=SASL_PLAINTEXT
+confluent.controlcenter.streams.sasl.mechanism=GSSAPI
+confluent.controlcenter.streams.sasl.kerberos.service.name=kafka
+confluent.controlcenter.streams.sasl.jaas.config=com.sun.security.auth.module.Krb5LoginModule required \
+   useKeyTab=true \
+   storeKey=true \
+   keyTab="/var/lib/secret/kafka.key" \
+   principal="kafka/admin@TEST.CONFLUENT.IO";
+
+{% if confluent.control.center.https_support %}
+{% include './includes/https_control-center.properties.j2' %}
+{% endif %}
