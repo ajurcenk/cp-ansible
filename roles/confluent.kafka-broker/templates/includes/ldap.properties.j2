@@ -1,0 +1,14 @@
+authorizer.class.name=io.confluent.kafka.security.ldap.authorizer.LdapAuthorizer
+
+ldap.authorizer.java.naming.security.authentication=simple
+ldap.authorizer.java.naming.provider.url=ldap://ldap:389
+ldap.authorizer.java.naming.security.principal=cn=admin,dc=example,dc=org
+ldap.authorizer.java.naming.security.credentials=admin
+
+ldap.authorizer.group.search.base=dc=example,dc=org
+
+ldap.authorizer.group.search.base=ou=groups,dc=example,dc=org
+ldap.authorizer.group.object.class=groupOfUniqueNames
+ldap.authorizer.group.name.attribute=cn
+ldap.authorizer.group.member.attribute=uniqueMember
+ldap.authorizer.group.member.attribute.pattern=uid=(.*),dc=example,dc=org

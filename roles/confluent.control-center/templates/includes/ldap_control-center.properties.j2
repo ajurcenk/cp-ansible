@@ -1,0 +1,9 @@
+
+# LDAP UI support
+# User search: SRCH base="dc=example,dc=org" scope=2 deref=3 filter="(&(objectClass=inetOrgPerson)(uid=user1))"
+# Groups search SRCH base="ou=groups,dc=example,dc=org" scope=2 deref=3 filter="(&(objectClass=groupOfUniqueNames)(uniqueMember=uid=user1,dc=example,dc=org))"
+
+confluent.controlcenter.rest.authentication.method=BASIC
+confluent.controlcenter.rest.authentication.realm=c3
+confluent.controlcenter.rest.authentication.roles=itpeople
+confluent.controlcenter.auth.restricted.roles=itpeople

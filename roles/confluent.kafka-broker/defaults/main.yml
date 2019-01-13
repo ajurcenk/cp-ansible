@@ -34,4 +34,5 @@ kafka:
       confluent.metrics.reporter.bootstrap.servers: "{{inventory_hostname}}:{{broker.config.port}}"
       confluent.metrics.reporter.topic.replicas: 3
       confluent.metrics.reporter.ssl.endpoint.identification.algorithm: ""
+      confluent.support.metrics.enable:  true
       ssl.endpoint.identification.algorithm: ""

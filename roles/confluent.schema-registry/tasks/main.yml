@@ -59,3 +59,4 @@
     name: "{{schema.registry.service_name}}"
     enabled: "{{schema.registry.systemd.enabled}}"
     state: "{{schema.registry.systemd.state}}"
+  when: (install_service)  

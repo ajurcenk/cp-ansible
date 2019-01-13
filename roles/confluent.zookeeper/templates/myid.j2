@@ -1,5 +1,14 @@
+{% if hostvars[groups['zookeeper'][0]]['zk_servers_ids'] is not defined %}
 {% for host in groups['zookeeper'] %}
 {% if host == inventory_hostname %}
 {{ loop.index }}
 {% endif %}
 {% endfor %}
+{% endif %}
+{% if hostvars[groups['zookeeper'][0]]['zk_servers_ids'] is defined %}
+{% for zk_host in hostvars[groups['zookeeper'][0]]['zk_servers_ids']%}
+{% if zk_host['host'] == inventory_hostname %}
+{{ zk_host['id'] }}
+{% endif %}
+{% endfor %}
+{% endif %}

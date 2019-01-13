@@ -2,13 +2,43 @@
 {% for key, value in zookeeper.config.items() %}
 {{key}}={{value}}
 {% endfor %}
+
+
+
+{% if hostvars[groups['zookeeper'][0]]['zk_servers_ids'] is not defined %}
 {% for host in groups['zookeeper'] %}
 server.{{ loop.index }}={{ host }}:2888:3888
 {% endfor %}
+{% endif %}
+
+{#
+Keep ZooKeeper servers order to support ZooKeeper hierarchical quorums
+#}
+{% if hostvars[groups['zookeeper'][0]]['zk_servers_ids'] is defined %}
+{% for zk_host in hostvars[groups['zookeeper'][0]]['zk_servers_ids']|sort(attribute='id') %}
+server.{{ zk_host['id'] }}={{ zk_host['host'] }}:2888:3888
+{% endfor %}
+{% endif %}
+
+{#
+ZooKeeper servers groups support
+#}
+{% if hostvars[groups['zookeeper'][0]]['zk_servers_groups'] is defined %}
+{% for zk_group in hostvars[groups['zookeeper'][0]]['zk_servers_groups']|sort(attribute='group') %}
+group.{{ zk_group['group'] }}={{ zk_group['servers'] }}
+{% endfor %}
+{% endif %}
+
+{#
+Kerberos security support
+#}
 {% if security_mode == 'kerberos' %}
 authProvider.1 = org.apache.zookeeper.server.auth.SASLAuthenticationProvider
 requireClientAuthScheme=sasl
 {% endif %}
+{#
+Kerberos security support with SSL/TLS support
+#}
 {% if security_mode == 'kerberos_ssl' %}
 authProvider.1 = org.apache.zookeeper.server.auth.SASLAuthenticationProvider
 requireClientAuthScheme=sasl

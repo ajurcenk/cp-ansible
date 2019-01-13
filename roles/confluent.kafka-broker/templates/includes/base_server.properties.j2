@@ -1,4 +1,15 @@
+{% if kafka.broker.zk_group is not defined %}
 zookeeper.connect={% for host in groups['zookeeper'] %}{% if loop.index > 1%},{% endif %}{{ host }}:{{zookeeper.config.clientPort}}{% endfor %}
+{% endif %}
+
+
+{#
+ZooKeeper hierarchical quorums to support Kafka stretched cluster
+#}
+{% if kafka.broker.zk_group is defined %}
+{% set is_zookeeper_group_started = 0 %}
+zookeeper.connect={% for host in groups['zookeeper'] %}{% if kafka.broker.zk_group == hostvars[groups['zookeeper'][loop.index - 1]]['config']['zk_group']%}{% if is_zookeeper_group_started == 1 %},{% endif %}{{ host }}:{{zookeeper.config.clientPort}}{% set is_zookeeper_group_started = 1 %}{% endif %}{% endfor %}
+{% endif %}
 
 log.dirs={% for logdir in kafka.broker.datadir %}{% if loop.index > 1%},{% endif %}{{ logdir }}{% endfor %}
 
